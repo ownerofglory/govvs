@@ -153,11 +153,15 @@ func GetArrivals(r ArrivalRequest, reqParams ...ReqParam) (*ArrivalResponse, err
 
 	setDefaultArrivalReqParams(params)
 
-	year := r.TimeAt.Format("2006")
-	month := r.TimeAt.Format("01")
-	day := r.TimeAt.Format("02")
-	hour := r.TimeAt.Format("15")
-	minute := r.TimeAt.Format("04")
+	timeAt := time.Now()
+	if r.TimeAt != nil {
+		timeAt = *r.TimeAt
+	}
+	year := timeAt.Format("2006")
+	month := timeAt.Format("01")
+	day := timeAt.Format("02")
+	hour := timeAt.Format("15")
+	minute := timeAt.Format("04")
 	stationId := r.StationId
 
 	params.Set(ParamItdDateYear, year)
@@ -247,11 +251,15 @@ func GetDepartures(r DepartureRequest, reqParams ...ReqParam) (*DepartureRespons
 
 	setDefaultDepartureReqParams(params)
 
-	year := r.TimeAt.Format("2006")
-	month := r.TimeAt.Format("01")
-	day := r.TimeAt.Format("02")
-	hour := r.TimeAt.Format("15")
-	minute := r.TimeAt.Format("04")
+	timeAt := time.Now()
+	if r.TimeAt != nil {
+		timeAt = *r.TimeAt
+	}
+	year := timeAt.Format("2006")
+	month := timeAt.Format("01")
+	day := timeAt.Format("02")
+	hour := timeAt.Format("15")
+	minute := timeAt.Format("04")
 	stationId := r.StationId
 
 	params.Set(ParamItdDateYear, year)
