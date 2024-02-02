@@ -280,3 +280,22 @@ var defaultArrivalParams = map[string]string{
 	ParamItdDateTimeDepArr:               "arr",
 	ParamItdTripDateTimeDepArr:           "arr",
 }
+
+var defaultDepartureParams = map[string]string{
+	ParamLocationServerActive:            "1",
+	ParamLsShowTrainsExplicit:            "1",
+	ParamStateless:                       "1",
+	ParamLanguage:                        "de",
+	ParamSpEncId:                         "0",
+	ParamAnySigWhenPerfectNoOtherMatches: "1",
+	ParamLimit:                           "100",
+	ParamDepArr:                          "departure",
+	ParamTypeDm:                          "any",
+	ParamAnyObjFilterDm:                  "2",
+	ParamDeleteAssignedStops:             "1",
+	ParamMode:                            "direct",
+	ParamDmLineSelectionAll:              "1",
+	ParamUseRealtime:                     "1",
+	ParamOutputFormat:                    "json",
+	ParamCoordOutputFormat:               "WGS84[DD.ddddd]",
+}
