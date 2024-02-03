@@ -191,6 +191,16 @@ const (
 	ParamItdTripDateTimeDepArr = "itdTripDateTimeDepArr"
 )
 
+// JourneyRequest represents the parameters required to request journey information between two points.
+//
+// Fields:
+// - OrigId (string): Identifier for the origin station or location. This should be a unique identifier recognized by the API.
+// - DstId (string): Identifier for the destination station or location. Similar to OrigId, this should be a unique identifier recognized by the API.
+// - TimeAt (*time.Time): Specifies the desired departure time for the journey. If nil, the current time is assumed.
+// - Limit (*int): Limits the number of journeys returned in the response. If nil, a default limit defined by the API is used.
+// - LangCode (*string): Language code for the response (e.g., "en" for English, "de" for German). If nil, the default language set by the API is used.
+//
+// This struct is used to encapsulate the request parameters for fetching journey planning information between two locations.
 type JourneyRequest struct {
 	OrigId   string
 	DstId    string
@@ -199,6 +209,15 @@ type JourneyRequest struct {
 	LangCode *string
 }
 
+// ArrivalRequest represents the parameters required to request arrival information for a specific station or location.
+//
+// Fields:
+// - StationId (string): The unique identifier of the station for which arrival information is requested. This identifier should be recognized by the API.
+// - TimeAt (*time.Time): Specifies the time at which arrival information is desired. If nil, the current time is assumed.
+// - Limit (*int): Limits the number of arrival records returned in the response. If nil, a default limit set by the API is used.
+// - LangCode (*string): Specifies the language of the response (e.g., "en" for English, "de" for German). If nil, the API's default language setting is used.
+//
+// This struct is utilized to gather arrival times and related information for trains, buses, or other modes of transport at a specified station.
 type ArrivalRequest struct {
 	StationId string
 	TimeAt    *time.Time
@@ -206,6 +225,15 @@ type ArrivalRequest struct {
 	LangCode  *string
 }
 
+// DepartureRequest represents the parameters required to request departure information for a specific station or location.
+//
+// Fields:
+// - StationId (string): The unique identifier for the station from which departure information is sought. This should correspond to an identifier known to the API.
+// - TimeAt (*time.Time): Indicates the specific time for which departure information is requested. Defaults to the current time if nil.
+// - Limit (*int): Controls the maximum number of departure entries to be included in the response. Uses a default value if nil.
+// - LangCode (*string): Language code for the API response, such as "en" for English or "de" for German. Defaults to the API's standard language if nil.
+//
+// Employed in obtaining information about scheduled departures from a particular station, including times, lines, and destinations.
 type DepartureRequest struct {
 	StationId string
 	TimeAt    *time.Time
@@ -213,6 +241,19 @@ type DepartureRequest struct {
 	LangCode  *string
 }
 
+// ReqParam represents an individual request parameter that can be included in API requests.
+//
+// Fields:
+// - Name (string): The name of the parameter, as expected by the API. This should match the exact name of the parameter in the API documentation.
+// - Value (string): The value assigned to the parameter. The type and format of this value should comply with what is expected by the API for the given parameter name.
+//
+// ReqParam is utilized to dynamically add additional parameters to requests, allowing for more customized and precise API queries.
+//
+// Example usage:
+// To specify a limit on the number of results returned by an API, you might create a ReqParam like so:
+// limitParam := ReqParam{Name: "limit", Value: "10"}
+// This ReqParam can then be passed to functions that accept variable request parameters, allowing for
+// dynamic construction of API queries.
 type ReqParam struct {
 	Name  string
 	Value string

@@ -1,11 +1,6 @@
-package govvs
+package journey
 
-type JourneyResponse struct {
-	ServerInfo     ServerInfo      `json:"serverInfo"`
-	Version        string          `json:"version"`
-	SystemMessages []SystemMessage `json:"systemMessages"`
-	Journeys       []Journey       `json:"journeys"`
-}
+import "github.com/ownerofglory/govvs/common"
 
 type Leg struct {
 	Duration             int                `json:"duration"`
@@ -89,7 +84,7 @@ type Transportation struct {
 	Number           string                    `json:"number"`
 	Description      string                    `json:"description"`
 	Product          TransportationProduct     `json:"product"`
-	Operator         Operator                  `json:"operator"`
+	Operator         common.Operator           `json:"operator"`
 	Destination      TransportationDestination `json:"destination"`
 	Properties       TransportationProperties  `json:"properties"`
 }

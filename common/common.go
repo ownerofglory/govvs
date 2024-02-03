@@ -1,18 +1,20 @@
-package govvs
+package common
 
-type ArrivalResponse struct {
-	Parameters   []Parameter  `json:"parameters"`
-	DM           DM           `json:"dm"`
-	Arr          Arr          `json:"arr"`
-	DateTime     DateTime     `json:"dateTime"`
-	DateRange    []DateRange  `json:"dateRange"`
-	Option       Option       `json:"option"`
-	ServingLines ServingLines `json:"servingLines"`
-	ArrivalList  []Arrival    `json:"arrivalList"`
-}
-
-type ServingLines struct {
-	Lines []Line `json:"lines"`
+type ServingLine struct {
+	Key           string      `json:"key"`
+	Code          string      `json:"code"`
+	Number        string      `json:"number"`
+	Symbol        string      `json:"symbol"`
+	MotType       string      `json:"motType"`
+	MtSubcode     string      `json:"mtSubcode"`
+	Realtime      string      `json:"realtime"`
+	Direction     string      `json:"direction"`
+	DirectionFrom string      `json:"directionFrom"`
+	Name          string      `json:"name"`
+	LiErgRiProj   LiErgRiProj `json:"liErgRiProj"`
+	DestID        string      `json:"destID"`
+	Stateless     string      `json:"stateless"`
+	LineDisplay   string      `json:"lineDisplay"`
 }
 
 type Parameter struct {
@@ -20,34 +22,34 @@ type Parameter struct {
 	Value string `json:"value"`
 }
 
-type ItdOdvAssignedStops struct {
-	StopID         string `json:"stopID"`
-	Name           string `json:"name"`
-	X              string `json:"x"`
-	Y              string `json:"y"`
-	MapName        string `json:"mapName"`
-	Value          string `json:"value"`
-	Place          string `json:"place"`
-	NameWithPlace  string `json:"nameWithPlace"`
-	DistanceTime   string `json:"distanceTime"`
-	IsTransferStop string `json:"isTransferStop"`
-	VM             string `json:"vm"`
-	GID            string `json:"gid"`
+type LiErgRiProj struct {
+	Line       string `json:"line"`
+	Project    string `json:"project"`
+	Direction  string `json:"direction"`
+	Supplement string `json:"supplement"`
+	Network    string `json:"network"`
+	Gid        string `json:"gid"`
+}
+
+type Operator struct {
+	Code       string `json:"code"`
+	Name       string `json:"name"`
+	PublicCode string `json:"publicCode,omitempty"`
+}
+
+type DateTime struct {
+	Year    string `json:"year"`
+	Month   string `json:"month"`
+	Day     string `json:"day"`
+	Weekday string `json:"weekday"`
+	Hour    string `json:"hour"`
+	Minute  string `json:"minute"`
 }
 
 type DM struct {
 	Input               Input               `json:"input"`
 	Points              DMPoints            `json:"points"`
 	ItdOdvAssignedStops ItdOdvAssignedStops `json:"itdOdvAssignedStops"`
-}
-
-type Arr struct {
-	Input  ArrInput    `json:"input"`
-	Points interface{} `json:"points"`
-}
-
-type ArrInput struct {
-	Input string `json:"input"`
 }
 
 type Input struct {
@@ -81,27 +83,23 @@ type Ref struct {
 	Coords  string `json:"coords"`
 }
 
-type Arrival struct {
-	StopID       string      `json:"stopID"`
-	X            string      `json:"x"`
-	Y            string      `json:"y"`
-	MapName      string      `json:"mapName"`
-	Area         string      `json:"area"`
-	Platform     string      `json:"platform"`
-	PlatformName string      `json:"platformName,omitempty"`
-	StopName     string      `json:"stopName"`
-	NameWO       string      `json:"nameWO"`
-	Countdown    string      `json:"countdown"`
-	DateTime     DateTime    `json:"dateTime"`
-	RealDateTime DateTime    `json:"realDateTime"`
-	ServingLine  ServingLine `json:"servingLine"`
-	Operator     Operator    `json:"operator"`
-	Attrs        []Attr      `json:"attrs"`
+type ItdOdvAssignedStops struct {
+	StopID         string `json:"stopID"`
+	Name           string `json:"name"`
+	X              string `json:"x"`
+	Y              string `json:"y"`
+	MapName        string `json:"mapName"`
+	Value          string `json:"value"`
+	Place          string `json:"place"`
+	NameWithPlace  string `json:"nameWithPlace"`
+	DistanceTime   string `json:"distanceTime"`
+	IsTransferStop string `json:"isTransferStop"`
+	VM             string `json:"vm"`
+	GID            string `json:"gid"`
 }
 
-type Attr struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+type ServingLines struct {
+	Lines []Line `json:"lines"`
 }
 
 type Line struct {
@@ -142,6 +140,27 @@ type Diva struct {
 	IsSTT       string `json:"isSTT"`
 	IsROP       string `json:"isROP"`
 	Attrs       []Attr `json:"attrs"`
+}
+
+type Attr struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+type Arr struct {
+	Input  ArrInput    `json:"input"`
+	Points interface{} `json:"points"`
+}
+
+type ArrInput struct {
+	Input string `json:"input"`
+}
+
+type DateRange struct {
+	Day     string `json:"day"`
+	Month   string `json:"month"`
+	Year    string `json:"year"`
+	Weekday string `json:"weekday"`
 }
 
 type Option struct {
@@ -185,11 +204,4 @@ type ExcludedMeans struct {
 	Means    string `json:"means"`
 	Value    string `json:"value"`
 	Selected string `json:"selected"`
-}
-
-type DateRange struct {
-	Day     string `json:"day"`
-	Month   string `json:"month"`
-	Year    string `json:"year"`
-	Weekday string `json:"weekday"`
 }
