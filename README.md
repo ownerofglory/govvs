@@ -1,5 +1,5 @@
-# Go VVS - VVS (Verkehr Verbund Stuttgart) API library
-Go library wrapping VVS API
+# Go VVS - VVS (Verkehrsverbund Stuttgart) API library
+Simple Go library wrapping VVS API
 ![Test Pipeline status](https://github.com/ownerofglory/govvs/actions/workflows/test-pipeline.yml/badge.svg)
 
 ## Features
@@ -51,7 +51,7 @@ import (
 func main() {
     // convert station name to station id (de:XXXXX:YYYY)
     origId, _ := station.NameToGlobalId(station.HAUPTBAHNHOF_TIEF_STUTTGART)
-	destId, _ := station.NameToGlobalId(station.FLUGHAFENMESSE_ECHTERDINGEN)
+    destId, _ := station.NameToGlobalId(station.FLUGHAFENMESSE_ECHTERDINGEN)
 
     req := govvs.JourneyRequest{
 		OrigId: origId,
