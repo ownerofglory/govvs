@@ -8,6 +8,7 @@ import (
 )
 
 func TestGetJourney(t *testing.T) {
+	testLimit := 4
 	testCases := []struct {
 		name        string
 		orig        string
@@ -21,6 +22,13 @@ func TestGetJourney(t *testing.T) {
 			orig:        station.BOPSER_STUTTGART,
 			dst:         station.HAUPTBAHNHOF_TIEF_STUTTGART,
 			errExpected: false,
+		},
+		{
+			name:        "When required params and limit are given then journeys no more than limit are returned",
+			orig:        station.BOPSER_STUTTGART,
+			dst:         station.HAUPTBAHNHOF_TIEF_STUTTGART,
+			errExpected: false,
+			limit:       &testLimit,
 		},
 	}
 
@@ -43,6 +51,10 @@ func TestGetJourney(t *testing.T) {
 				t.Fatalf("Error occured: %v\n", err)
 			}
 
+			if tc.limit != nil && len(res.Journeys) > *tc.limit {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
 			if res == nil {
 				t.Fatalf("Response is nil")
 			}
@@ -51,6 +63,7 @@ func TestGetJourney(t *testing.T) {
 }
 
 func TestGetArrivals(t *testing.T) {
+	testLimit := 4
 	testCases := []struct {
 		name        string
 		stationId   string
@@ -62,6 +75,12 @@ func TestGetArrivals(t *testing.T) {
 			name:        "When required params are given then arrivals are returned",
 			stationId:   station.BOPSER_STUTTGART,
 			errExpected: false,
+		},
+		{
+			name:        "When required params and limit are given then arrivals no more than limit are returned",
+			stationId:   station.BOPSER_STUTTGART,
+			errExpected: false,
+			limit:       &testLimit,
 		},
 	}
 
@@ -83,6 +102,10 @@ func TestGetArrivals(t *testing.T) {
 				t.Fatalf("Error occured: %v\n", err)
 			}
 
+			if tc.limit != nil && len(res.ArrivalList) > *tc.limit {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
 			if res == nil {
 				t.Fatalf("Response is nil")
 			}
@@ -91,6 +114,7 @@ func TestGetArrivals(t *testing.T) {
 }
 
 func TestGetDepartures(t *testing.T) {
+	testLimit := 4
 	testCases := []struct {
 		name        string
 		stationId   string
@@ -102,6 +126,12 @@ func TestGetDepartures(t *testing.T) {
 			name:        "When required params are given then departures are returned",
 			stationId:   station.BOPSER_STUTTGART,
 			errExpected: false,
+		},
+		{
+			name:        "When required params and limit are given then departures no more then limit are returned",
+			stationId:   station.BOPSER_STUTTGART,
+			errExpected: false,
+			limit:       &testLimit,
 		},
 	}
 
@@ -120,6 +150,10 @@ func TestGetDepartures(t *testing.T) {
 			res, err := GetDepartures(req)
 
 			if !tc.errExpected && err != nil {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
+			if tc.limit != nil && len(res.DepartureList) > *tc.limit {
 				t.Fatalf("Error occured: %v\n", err)
 			}
 
