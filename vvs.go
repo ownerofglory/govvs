@@ -3,7 +3,7 @@ package govvs
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	baseURLJourney  = "https://www3.vvs.de/mngvvs/XML_TRIP_REQUEST2"
-	baseURLWidgetDM = "http://www3.vvs.de/vvs/widget/XML_DM_REQUEST"
+	baseURLJourney    = "https://www3.vvs.de/mngvvs/XML_TRIP_REQUEST2"
+	baseURLWidgetDM   = "http://www3.vvs.de/vvs/widget/XML_DM_REQUEST"
+	baseURLStopFinder = "https://www3.vvs.de/mngvvs/XML_STOPFINDER_REQUEST"
 )
 
 const (
@@ -103,7 +104,7 @@ func GetJourney(r JourneyRequest, reqParams ...ReqParam) (*JourneyResponse, erro
 	defer resp.Body.Close()
 
 	// Read the response body
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Error reading response body: %v\n", err)
 		return nil, err
@@ -234,7 +235,7 @@ func GetArrivals(r ArrivalRequest, reqParams ...ReqParam) (*ArrivalResponse, err
 	defer resp.Body.Close()
 
 	// Read the response body
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Error reading response body: %v\n", err)
 		return nil, err
@@ -363,7 +364,7 @@ func GetDepartures(r DepartureRequest, reqParams ...ReqParam) (*DepartureRespons
 	defer resp.Body.Close()
 
 	// Read the response body
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading response body:", err)
 		return nil, err
@@ -378,6 +379,112 @@ func GetDepartures(r DepartureRequest, reqParams ...ReqParam) (*DepartureRespons
 	}
 
 	return &departureResponse, nil
+}
+
+// GetStopFinder sends a request to retrieve stop information for a specified location.
+// The function takes a StopFinderRequest struct containing essential request parameters and
+// a variable number of ReqParam structs to specify additional request options.
+//
+// Parameters:
+// - r StopFinderRequest: A struct containing the base request parameters such as stop name and type.
+//
+//   - Name (string): The name of the stop or location to search for.
+//
+//   - Type (string): The type of location being queried (e.g., "any" for any type).
+//
+//   - CoordOutputFormat (string): The format in which coordinates should be returned (e.g., "EPSG:4326").
+//
+//   - OutputFormat (string): Specifies the format of the response (e.g., "rapidJSON").
+//
+//   - ServerInfo (*bool): Whether to include server information in the response. If nil, the default value is used.
+//
+//   - Language (*string): The language for the response (e.g., "de" for German). If nil, the default language is used.
+//
+//   - UseRealtime (*bool): Whether to use real-time data in the response. If nil, the default value is used.
+//
+//   - reqParams ...ReqParam: Optional parameters to further customize the request.
+//
+//     Supported optional parameters (refer to constants for parameter names):
+//
+//   - ParamCoordOutputFormat: Specifies the coordinate format (e.g., "EPSG:4326").
+//
+//   - ParamOutputFormat: Specifies the response format (e.g., "rapidJSON").
+//
+//   - ParamServerInfo: Indicates if server info should be included in the response.
+//
+//   - ParamUseRealtime: Specifies whether to use real-time data.
+//
+//   - ParamLanguage: The language of the response.
+//
+// Returns:
+// - (*StopFinderResponse, error): A pointer to a StopFinderResponse struct containing the stop information, or an error if the request fails.
+//
+// Example usage:
+// response, err := GetStopFinder(StopFinderRequest{Name: "Fred-Uhlman-Str 11", Type: "any"}, ReqParam{Name: ParamLimit, Value: "10"})
+//
+//	if err != nil {
+//	    // handle error
+//	}
+//
+// // process response
+func GetStopFinder(r StopFinderRequest, reqParams ...ReqParam) (*StopFinderResponse, error) {
+	// Assemble the query parameters
+	params := url.Values{}
+
+	// Set default StopFinder parameters
+	setDefaultStopFinderReqParams(params)
+
+	// Use provided StopFinderRequest fields
+	params.Set(ParamNameSF, r.Name)
+	params.Set(ParamTypeSF, r.Type)
+
+	// Optional parameters handling
+	if r.CoordOutputFormat != "" {
+		params.Set(ParamCoordOutputFormat, r.CoordOutputFormat)
+	}
+	if r.OutputFormat != "" {
+		params.Set(ParamOutputFormat, r.OutputFormat)
+	}
+	if r.ServerInfo != nil {
+		params.Set(ParamServerInfo, boolToString(*r.ServerInfo))
+	}
+	if r.Language != nil {
+		params.Set(ParamLanguage, *r.Language)
+	}
+	if r.UseRealtime != nil {
+		params.Set(ParamUseRealtime, boolToString(*r.UseRealtime))
+	}
+
+	// Apply any additional optional request parameters
+	overrideReqParams(params, reqParams...)
+
+	// Build the complete URL with the encoded query parameters
+	fullURL := baseURLStopFinder + "?" + params.Encode()
+
+	// Perform the GET request
+	resp, err := http.Get(fullURL)
+	if err != nil {
+		fmt.Println("Error making GET request:", err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return nil, err
+	}
+
+	// Unmarshal the JSON response into the StopFinderResponse struct
+	var stopFinderResponse StopFinderResponse
+	err = json.Unmarshal(body, &stopFinderResponse)
+	if err != nil {
+		fmt.Println("Error unmarshalling JSON:", err)
+		return nil, err
+	}
+
+	return &stopFinderResponse, nil
 }
 
 func overrideReqParams(urlParams url.Values, params ...ReqParam) {
@@ -402,4 +509,18 @@ func setDefaultJourneyReqParams(urlParams url.Values) {
 	for param, defaultValue := range defaultJourneyParams {
 		urlParams.Set(param, defaultValue)
 	}
+}
+
+func setDefaultStopFinderReqParams(params url.Values) {
+	for key, value := range defaultStopFinderParams {
+		params.Set(key, value)
+	}
+}
+
+// boolToString converts a boolean value to "1" or "0" for use in query parameters.
+func boolToString(b bool) string {
+	if b {
+		return "1"
+	}
+	return "0"
 }

@@ -163,3 +163,66 @@ func TestGetDepartures(t *testing.T) {
 		})
 	}
 }
+
+func TestGetStopFinder(t *testing.T) {
+	testCases := []struct {
+		name        string
+		stopName    string
+		stopType    string
+		lang        *string
+		useRealtime *bool
+		errExpected bool
+	}{
+		{
+			name:        "When required params are given then stop information is returned",
+			stopName:    "Königstr. 1",
+			stopType:    "any",
+			errExpected: false,
+		},
+		{
+			name:        "When real-time data is requested then real-time information is returned",
+			stopName:    "Königstr. 1",
+			stopType:    "any",
+			useRealtime: boolPointer(true),
+			errExpected: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := StopFinderRequest{
+				Name: tc.stopName,
+				Type: tc.stopType,
+			}
+
+			if tc.lang != nil {
+				req.Language = tc.lang
+			}
+			if tc.useRealtime != nil {
+				req.UseRealtime = tc.useRealtime
+			}
+
+			res, err := GetStopFinder(req)
+
+			// Check for errors
+			if !tc.errExpected && err != nil {
+				t.Fatalf("Error occurred: %v\n", err)
+			}
+
+			// Check that response is not nil
+			if res == nil && !tc.errExpected {
+				t.Fatalf("Expected response but got nil")
+			}
+
+			// Check that if an error is expected, no result should be returned
+			if tc.errExpected && res != nil {
+				t.Fatalf("Expected error but got valid response")
+			}
+		})
+	}
+}
+
+// Helper function to create a pointer for boolean values
+func boolPointer(b bool) *bool {
+	return &b
+}

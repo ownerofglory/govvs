@@ -1,4 +1,21 @@
-package common
+package vvscommon
+
+type ServerInfo struct {
+	ControllerVersion string  `json:"controllerVersion"`
+	ServerID          string  `json:"serverID"`
+	VirtDir           string  `json:"virtDir"`
+	ServerTime        string  `json:"serverTime"`
+	CalcTime          float64 `json:"calcTime"`
+	LogRequestId      string  `json:"logRequestId"`
+}
+
+type SystemMessage struct {
+	Type    string `json:"type"`
+	Module  string `json:"module"`
+	Code    int    `json:"code"`
+	Text    string `json:"text"`
+	SubType string `json:"subType"`
+}
 
 type ServingLine struct {
 	Key           string      `json:"key"`
