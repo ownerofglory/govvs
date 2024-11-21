@@ -1,24 +1,24 @@
 package departure
 
-import "github.com/ownerofglory/govvs/common"
+import "github.com/ownerofglory/govvs/vvscommon"
 
 type Departure struct {
-	StopID       string             `json:"stopID"`
-	X            string             `json:"x"`
-	Y            string             `json:"y"`
-	MapName      string             `json:"mapName"`
-	Area         string             `json:"area"`
-	Platform     string             `json:"platform"`
-	PlatformName string             `json:"platformName,omitempty"`
-	StopName     string             `json:"stopName"`
-	NameWO       string             `json:"nameWO"`
-	Countdown    string             `json:"countdown"`
-	DateTime     common.DateTime    `json:"dateTime"`
-	ServingLine  common.ServingLine `json:"servingLine"`
-	Operator     common.Operator    `json:"operator"`
-	StopInfos    *StopInfos         `json:"stopInfos,omitempty"`
-	LineInfos    interface{}        `json:"lineInfos,omitempty"`
-	TripInfos    interface{}        `json:"tripInfos,omitempty"`
+	StopID       string                `json:"stopID"`
+	X            string                `json:"x"`
+	Y            string                `json:"y"`
+	MapName      string                `json:"mapName"`
+	Area         string                `json:"area"`
+	Platform     string                `json:"platform"`
+	PlatformName string                `json:"platformName,omitempty"`
+	StopName     string                `json:"stopName"`
+	NameWO       string                `json:"nameWO"`
+	Countdown    string                `json:"countdown"`
+	DateTime     vvscommon.DateTime    `json:"dateTime"`
+	ServingLine  vvscommon.ServingLine `json:"servingLine"`
+	Operator     vvscommon.Operator    `json:"operator"`
+	StopInfos    *StopInfos            `json:"stopInfos,omitempty"`
+	LineInfos    interface{}           `json:"lineInfos,omitempty"`
+	TripInfos    interface{}           `json:"tripInfos,omitempty"`
 }
 
 type StopInfos struct {

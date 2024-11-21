@@ -1,6 +1,6 @@
 package journey
 
-import "github.com/ownerofglory/govvs/common"
+import "github.com/ownerofglory/govvs/vvscommon"
 
 type Leg struct {
 	Duration             int                `json:"duration"`
@@ -84,7 +84,7 @@ type Transportation struct {
 	Number           string                    `json:"number"`
 	Description      string                    `json:"description"`
 	Product          TransportationProduct     `json:"product"`
-	Operator         common.Operator           `json:"operator"`
+	Operator         vvscommon.Operator        `json:"operator"`
 	Destination      TransportationDestination `json:"destination"`
 	Properties       TransportationProperties  `json:"properties"`
 }
@@ -205,23 +205,6 @@ type Ticket struct {
 type TicketProperties struct {
 	TariffProductDefault []interface{} `json:"tariffProductDefault"`
 	TariffProductOption  []interface{} `json:"tariffProductOption"`
-}
-
-type ServerInfo struct {
-	ControllerVersion string  `json:"controllerVersion"`
-	ServerID          string  `json:"serverID"`
-	VirtDir           string  `json:"virtDir"`
-	ServerTime        string  `json:"serverTime"`
-	CalcTime          float64 `json:"calcTime"`
-	LogRequestId      string  `json:"logRequestId"`
-}
-
-type SystemMessage struct {
-	Type    string `json:"type"`
-	Module  string `json:"module"`
-	Code    int    `json:"code"`
-	Text    string `json:"text"`
-	SubType string `json:"subType"`
 }
 
 type Journey struct {

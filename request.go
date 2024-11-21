@@ -23,6 +23,14 @@ const (
 
 	// ParamUseRealtime specifies whether to use real-time data. "1" for yes, "0" for no.
 	ParamUseRealtime = "useRealtime"
+
+	// ParamNameSF specifies the stop or location name for which stop finder information is requested.
+	// This parameter is used to identify the specific location or address the stop finder should search for.
+	ParamNameSF = "name_sf"
+
+	// ParamTypeSF specifies the type of location being searched for in the stop finder request.
+	// It defines the category of the location such as "any", "stop", "street", etc.
+	ParamTypeSF = "type_sf"
 )
 
 // Constants for VVS (Verkehrs- und Tarifverbund Stuttgart) API request parameters.
@@ -241,6 +249,28 @@ type DepartureRequest struct {
 	LangCode  *string
 }
 
+// StopFinderRequest represents the parameters required to request information about stops for a specific location.
+//
+// Fields:
+// - Name (string): The name of the stop or location for which stop information is requested.
+// - Type (string): The type of the location being queried (e.g., "any" to allow any type of location). This may correspond to station, locality, or stop types.
+// - CoordOutputFormat (string): Specifies the format of the coordinates in the response, commonly "EPSG:4326" for latitude and longitude.
+// - OutputFormat (string): Specifies the format of the response data, such as "rapidJSON".
+// - ServerInfo (*bool): Whether to include server information in the response. Set true for including it.
+// - Language (*string): The language for the response (e.g., "de" for German). If nil, the default language set by the API is used.
+// - UseRealtime (*bool): Whether to include real-time information in the response. If nil, the API's default behavior is used.
+//
+// This struct is used to encapsulate the parameters required to search for stops near a location.
+type StopFinderRequest struct {
+	Name              string
+	Type              string
+	CoordOutputFormat string
+	OutputFormat      string
+	ServerInfo        *bool
+	Language          *string
+	UseRealtime       *bool
+}
+
 // ReqParam represents an individual request parameter that can be included in API requests.
 //
 // Fields:
@@ -339,4 +369,15 @@ var defaultDepartureParams = map[string]string{
 	ParamUseRealtime:                     "1",
 	ParamOutputFormat:                    "json",
 	ParamCoordOutputFormat:               "WGS84[DD.ddddd]",
+}
+
+var defaultStopFinderParams = map[string]string{
+	ParamSpEncId:              "0",
+	ParamCoordOutputFormat:    "EPSG:4326",
+	ParamLanguage:             "de",
+	ParamLocationServerActive: "1",
+	ParamOutputFormat:         "rapidJSON",
+	ParamServerInfo:           "1",
+	ParamUseRealtime:          "1",
+	ParamTypeOrigin:           "any",
 }
