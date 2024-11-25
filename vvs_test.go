@@ -222,6 +222,28 @@ func TestGetStopFinder(t *testing.T) {
 	}
 }
 
+func TestGetGeoObject(t *testing.T) {
+	testCases := []struct {
+		name   string
+		lineID string
+	}{
+		{
+			name:   "success",
+			lineID: "vvs:20007:+:H:j24:1",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := GeoObjectRequest{
+				LineID: tc.lineID,
+			}
+			geoObj, err := GetGeoObject(req)
+			_ = geoObj
+			_ = err
+		})
+	}
+}
+
 // Helper function to create a pointer for boolean values
 func boolPointer(b bool) *bool {
 	return &b

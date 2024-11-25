@@ -2,6 +2,11 @@ package govvs
 
 import "time"
 
+// Request params common for Geocoord
+const (
+	ParamLineID = "line"
+)
+
 // Request params common for Journey and Arrival
 const (
 	// ParamSpEncId specifies the special encryption ID for the request, usually set to "0" for public requests.
@@ -269,6 +274,14 @@ type StopFinderRequest struct {
 	ServerInfo        *bool
 	Language          *string
 	UseRealtime       *bool
+}
+
+// GeoObjectRequest represents the parameters required to fetch geo-object information from the VVS API.
+//
+// Fields:
+// - LineID (string): The unique identifier of the line or transportation object to retrieve data for.
+type GeoObjectRequest struct {
+	LineID string
 }
 
 // ReqParam represents an individual request parameter that can be included in API requests.

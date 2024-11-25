@@ -3,6 +3,7 @@ package govvs
 import (
 	"github.com/ownerofglory/govvs/arrival"
 	"github.com/ownerofglory/govvs/departure"
+	"github.com/ownerofglory/govvs/geoobj"
 	"github.com/ownerofglory/govvs/journey"
 	"github.com/ownerofglory/govvs/station"
 	"github.com/ownerofglory/govvs/vvscommon"
@@ -86,4 +87,20 @@ type StopFinderResponse struct {
 	ServerInfo     vvscommon.ServerInfo      `json:"serverInfo"`
 	SystemMessages []vvscommon.SystemMessage `json:"systemMessages"`
 	Locations      []station.Location        `json:"locations"`
+}
+
+// GeoObjectResponse represents the data structure for a response from the geo-object request.
+//
+// Fields:
+// - ServerInfo (ServerInfo): Contains metadata about the server that processed the request, including version and performance metrics.
+// - Version (string): The version of the API used to generate the response.
+// - Transportations ([]Transportation): A list of transport objects, including lines, stops, and their associated data.
+// - Transfers ([]Transfer): A list of transfer options associated with the requested line or object.
+//
+// GeoObjectResponse provides comprehensive details about a specific line or transportation object, including its stops, coordinates, and transfer options.
+type GeoObjectResponse struct {
+	ServerInfo      vvscommon.ServerInfo       `json:"serverInfo"`
+	Version         string                     `json:"version"`
+	Transportations []vvscommon.Transportation `json:"transportations"`
+	Transfers       []geoobj.Transfer          `json:"transfers"`
 }

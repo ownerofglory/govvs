@@ -3,142 +3,43 @@ package journey
 import "github.com/ownerofglory/govvs/vvscommon"
 
 type Leg struct {
-	Duration             int                `json:"duration"`
-	IsRealtimeControlled bool               `json:"isRealtimeControlled"`
-	RealtimeStatus       []string           `json:"realtimeStatus"`
-	Origin               Location           `json:"origin"`
-	Destination          Location           `json:"destination"`
-	Transportation       Transportation     `json:"transportation"`
-	StopSequence         []StopSequenceItem `json:"stopSequence"`
-	Infos                []Info             `json:"infos"`
-	Coords               [][]float64        `json:"coords"`
-	Properties           LegProperties      `json:"properties"`
-}
-
-type Location struct {
-	IsGlobalId                 bool               `json:"isGlobalId"`
-	ID                         string             `json:"id"`
-	Name                       string             `json:"name"`
-	Type                       string             `json:"type"`
-	Coord                      []float64          `json:"coord"`
-	Niveau                     int                `json:"niveau"`
-	Parent                     *ParentLocation    `json:"parent,omitempty"`
-	ProductClasses             []int              `json:"productClasses"`
-	DepartureTimeBaseTimetable string             `json:"departureTimeBaseTimetable,omitempty"`
-	DepartureTimePlanned       string             `json:"departureTimePlanned,omitempty"`
-	DepartureTimeEstimated     string             `json:"departureTimeEstimated,omitempty"`
-	ArrivalTimeBaseTimetable   string             `json:"arrivalTimeBaseTimetable,omitempty"`
-	ArrivalTimePlanned         string             `json:"arrivalTimePlanned,omitempty"`
-	ArrivalTimeEstimated       string             `json:"arrivalTimeEstimated,omitempty"`
-	Properties                 LocationProperties `json:"properties"`
-}
-
-type ParentLocation struct {
-	IsGlobalId bool             `json:"isGlobalId"`
-	ID         string           `json:"id"`
-	Name       string           `json:"name"`
-	Type       string           `json:"type"`
-	Parent     *ParentLocation  `json:"parent,omitempty"`
-	Properties ParentProperties `json:"properties,omitempty"`
-	Coord      []float64        `json:"coord,omitempty"`
-	Niveau     int              `json:"niveau,omitempty"`
-}
-
-type ParentProperties struct {
-	StopId string `json:"stopId"`
-}
-
-type LocationProperties struct {
-	Downloads      []Download    `json:"downloads"`
-	AreaNiveauDiva string        `json:"AREA_NIVEAU_DIVA"`
-	AreaGid        string        `json:"areaGid"`
-	Area           string        `json:"area"`
-	Platform       string        `json:"platform"`
-	PlatformName   string        `json:"platformName,omitempty"`
-	AccessArray    []AccessArray `json:"accessArray"`
-}
-
-type Download struct {
-	Type string `json:"type"`
-	URL  string `json:"url"`
-}
-
-type AccessArray struct {
-	StoppointAccess StoppointAccess `json:"stoppointAccess"`
-}
-
-type StoppointAccess struct {
-	Height        int `json:"height"`
-	Equipment     int `json:"equipment"`
-	MaxWeight     int `json:"maxWeight"`
-	DistanceTrack int `json:"distanceTrack"`
-	LengthAvail   int `json:"lengthAvail"`
-	WidthAvail    int `json:"widthAvail"`
-	Attributes    int `json:"attributes"`
-}
-
-type Transportation struct {
-	ID               string                    `json:"id"`
-	Name             string                    `json:"name"`
-	DisassembledName string                    `json:"disassembledName"`
-	Number           string                    `json:"number"`
-	Description      string                    `json:"description"`
-	Product          TransportationProduct     `json:"product"`
-	Operator         vvscommon.Operator        `json:"operator"`
-	Destination      TransportationDestination `json:"destination"`
-	Properties       TransportationProperties  `json:"properties"`
-}
-
-type TransportationProduct struct {
-	ID     int    `json:"id"`
-	Class  int    `json:"class"`
-	Name   string `json:"name"`
-	IconId int    `json:"iconId"`
-}
-
-type TransportationDestination struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-type TransportationProperties struct {
-	IsTTB           bool   `json:"isTTB"`
-	IsSTT           bool   `json:"isSTT"`
-	IsROP           bool   `json:"isROP"`
-	TripCode        int    `json:"tripCode"`
-	TimetablePeriod string `json:"timetablePeriod"`
-	LineDisplay     string `json:"lineDisplay"`
-	GlobalId        string `json:"globalId"`
-	AVMSTripID      string `json:"AVMSTripID"`
-	OperatorURL     string `json:"OperatorURL"`
+	Duration             int                      `json:"duration"`
+	IsRealtimeControlled bool                     `json:"isRealtimeControlled"`
+	RealtimeStatus       []string                 `json:"realtimeStatus"`
+	Origin               vvscommon.Location       `json:"origin"`
+	Destination          vvscommon.Location       `json:"destination"`
+	Transportation       vvscommon.Transportation `json:"transportation"`
+	StopSequence         []StopSequenceItem       `json:"stopSequence"`
+	Infos                []Info                   `json:"infos"`
+	Coords               [][]float64              `json:"coords"`
+	Properties           LegProperties            `json:"properties"`
 }
 
 type StopSequenceItem struct {
-	IsGlobalId           bool               `json:"isGlobalId"`
-	ID                   string             `json:"id"`
-	Name                 string             `json:"name"`
-	DisassembledName     string             `json:"disassembledName,omitempty"`
-	Type                 string             `json:"type"`
-	PointType            string             `json:"pointType,omitempty"`
-	Coord                []float64          `json:"coord"`
-	Niveau               int                `json:"niveau"`
-	Parent               ParentLocation     `json:"parent"`
-	ProductClasses       []int              `json:"productClasses"`
-	Properties           SequenceProperties `json:"properties"`
-	ArrivalTimePlanned   string             `json:"arrivalTimePlanned,omitempty"`
-	ArrivalTimeEstimated string             `json:"arrivalTimeEstimated,omitempty"`
+	IsGlobalId           bool                     `json:"isGlobalId"`
+	ID                   string                   `json:"id"`
+	Name                 string                   `json:"name"`
+	DisassembledName     string                   `json:"disassembledName,omitempty"`
+	Type                 string                   `json:"type"`
+	PointType            string                   `json:"pointType,omitempty"`
+	Coord                []float64                `json:"coord"`
+	Niveau               int                      `json:"niveau"`
+	Parent               vvscommon.ParentLocation `json:"parent"`
+	ProductClasses       []int                    `json:"productClasses"`
+	Properties           SequenceProperties       `json:"properties"`
+	ArrivalTimePlanned   string                   `json:"arrivalTimePlanned,omitempty"`
+	ArrivalTimeEstimated string                   `json:"arrivalTimeEstimated,omitempty"`
 }
 
 type SequenceProperties struct {
-	AreaNiveauDiva       string        `json:"AREA_NIVEAU_DIVA"`
-	StoppingPointPlanned string        `json:"stoppingPointPlanned,omitempty"`
-	AreaGid              string        `json:"areaGid"`
-	Area                 string        `json:"area"`
-	Platform             string        `json:"platform"`
-	PlatformName         string        `json:"platformName,omitempty"`
-	AccessArray          []AccessArray `json:"accessArray,omitempty"`
-	Zone                 string        `json:"zone,omitempty"`
+	AreaNiveauDiva       string                  `json:"AREA_NIVEAU_DIVA"`
+	StoppingPointPlanned string                  `json:"stoppingPointPlanned,omitempty"`
+	AreaGid              string                  `json:"areaGid"`
+	Area                 string                  `json:"area"`
+	Platform             string                  `json:"platform"`
+	PlatformName         string                  `json:"platformName,omitempty"`
+	AccessArray          []vvscommon.AccessArray `json:"accessArray,omitempty"`
+	Zone                 string                  `json:"zone,omitempty"`
 }
 
 type Info struct {

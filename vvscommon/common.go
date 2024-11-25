@@ -222,3 +222,114 @@ type ExcludedMeans struct {
 	Value    string `json:"value"`
 	Selected string `json:"selected"`
 }
+
+// Transportation represents a line or transportation object.
+//
+// Fields:
+// - ID (string): The unique identifier for the transportation object.
+// - Name (string): The name of the transportation object, e.g., "Stadtbahn U7".
+// - Description (string): A description of the transportation line, including its route.
+// - Product (Product): Details about the transportation product (e.g., type, icon).
+// - Operator (Operator): Details about the operator managing the transportation line.
+// - Destination (Destination): Information about the destination of the line.
+// - Properties (TransportationProperties): Additional properties related to the line.
+// - Coords ([][][]float64): A list of coordinates representing the route.
+// - LocationSequence ([]Location): A sequence of locations or stops on the line.
+type Transportation struct {
+	ID               string                    `json:"id"`
+	Name             string                    `json:"name"`
+	DisassembledName string                    `json:"disassembledName"`
+	Number           string                    `json:"number"`
+	Description      string                    `json:"description"`
+	Product          TransportationProduct     `json:"product"`
+	Operator         Operator                  `json:"operator"`
+	Destination      TransportationDestination `json:"destination"`
+	Properties       TransportationProperties  `json:"properties"`
+}
+
+type Location struct {
+	IsGlobalId                 bool               `json:"isGlobalId"`
+	ID                         string             `json:"id"`
+	Name                       string             `json:"name"`
+	Type                       string             `json:"type"`
+	Coord                      []float64          `json:"coord"`
+	Niveau                     int                `json:"niveau"`
+	Parent                     *ParentLocation    `json:"parent,omitempty"`
+	ProductClasses             []int              `json:"productClasses"`
+	DepartureTimeBaseTimetable string             `json:"departureTimeBaseTimetable,omitempty"`
+	DepartureTimePlanned       string             `json:"departureTimePlanned,omitempty"`
+	DepartureTimeEstimated     string             `json:"departureTimeEstimated,omitempty"`
+	ArrivalTimeBaseTimetable   string             `json:"arrivalTimeBaseTimetable,omitempty"`
+	ArrivalTimePlanned         string             `json:"arrivalTimePlanned,omitempty"`
+	ArrivalTimeEstimated       string             `json:"arrivalTimeEstimated,omitempty"`
+	Properties                 LocationProperties `json:"properties"`
+}
+
+type ParentLocation struct {
+	IsGlobalId bool             `json:"isGlobalId"`
+	ID         string           `json:"id"`
+	Name       string           `json:"name"`
+	Type       string           `json:"type"`
+	Parent     *ParentLocation  `json:"parent,omitempty"`
+	Properties ParentProperties `json:"properties,omitempty"`
+	Coord      []float64        `json:"coord,omitempty"`
+	Niveau     int              `json:"niveau,omitempty"`
+}
+
+type LocationProperties struct {
+	Downloads      []Download    `json:"downloads"`
+	AreaNiveauDiva string        `json:"AREA_NIVEAU_DIVA"`
+	AreaGid        string        `json:"areaGid"`
+	Area           string        `json:"area"`
+	Platform       string        `json:"platform"`
+	PlatformName   string        `json:"platformName,omitempty"`
+	AccessArray    []AccessArray `json:"accessArray"`
+}
+
+type ParentProperties struct {
+	StopId string `json:"stopId"`
+}
+
+type Download struct {
+	Type string `json:"type"`
+	URL  string `json:"url"`
+}
+
+type AccessArray struct {
+	StoppointAccess StoppointAccess `json:"stoppointAccess"`
+}
+
+type StoppointAccess struct {
+	Height        int `json:"height"`
+	Equipment     int `json:"equipment"`
+	MaxWeight     int `json:"maxWeight"`
+	DistanceTrack int `json:"distanceTrack"`
+	LengthAvail   int `json:"lengthAvail"`
+	WidthAvail    int `json:"widthAvail"`
+	Attributes    int `json:"attributes"`
+}
+
+type TransportationProduct struct {
+	ID     int    `json:"id"`
+	Class  int    `json:"class"`
+	Name   string `json:"name"`
+	IconId int    `json:"iconId"`
+}
+
+type TransportationDestination struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+type TransportationProperties struct {
+	IsTTB           bool   `json:"isTTB"`
+	IsSTT           bool   `json:"isSTT"`
+	IsROP           bool   `json:"isROP"`
+	TripCode        int    `json:"tripCode"`
+	TimetablePeriod string `json:"timetablePeriod"`
+	LineDisplay     string `json:"lineDisplay"`
+	GlobalId        string `json:"globalId"`
+	AVMSTripID      string `json:"AVMSTripID"`
+	OperatorURL     string `json:"OperatorURL"`
+}
