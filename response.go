@@ -5,6 +5,7 @@ import (
 	"github.com/ownerofglory/govvs/departure"
 	"github.com/ownerofglory/govvs/geoobj"
 	"github.com/ownerofglory/govvs/journey"
+	"github.com/ownerofglory/govvs/line"
 	"github.com/ownerofglory/govvs/station"
 	"github.com/ownerofglory/govvs/vvscommon"
 )
@@ -103,4 +104,16 @@ type GeoObjectResponse struct {
 	Version         string                     `json:"version"`
 	Transportations []vvscommon.Transportation `json:"transportations"`
 	Transfers       []geoobj.Transfer          `json:"transfers"`
+}
+
+// ServingLinesResponse encapsulates the response data for the serving lines API request.
+//
+// Fields:
+// - ServerInfo (ServerInfo): Metadata about the server that processed the request.
+// - Version (string): API version.
+// - Lines ([]Line): A list of lines matching the request criteria.
+type ServingLinesResponse struct {
+	ServerInfo vvscommon.ServerInfo `json:"serverInfo"`
+	Version    string               `json:"version"`
+	Lines      []line.Line          `json:"lines"`
 }

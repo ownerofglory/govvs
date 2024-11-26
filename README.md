@@ -7,6 +7,8 @@ Simple Go library wrapping VVS API
 - Station finder
 - Departure information
 - Arrival information
+- Serving lines search
+- Geo information for lines
 
 ## Prerequisites
 - Go version >= 1.19

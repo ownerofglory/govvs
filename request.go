@@ -2,6 +2,13 @@ package govvs
 
 import "time"
 
+// Constants for Serving Lines API request parameters
+const (
+	ParamCommand  = "command"
+	ParamLineName = "lineName"
+	ParamNet      = "net"
+)
+
 // Request params common for Geocoord
 const (
 	// ParamLineID specifies the line ID for the request, e.g. 'U6'
@@ -289,6 +296,14 @@ type StopFinderRequest struct {
 // - LineID (string): The unique identifier of the line or transportation object to retrieve data for.
 type GeoObjectRequest struct {
 	LineID string
+}
+
+// ServingLinesRequest represents the parameters required to fetch serving lines data.
+//
+// Fields:
+// - LineName (string): The name of the line to query (e.g., "U7").
+type ServingLinesRequest struct {
+	LineName string
 }
 
 // ReqParam represents an individual request parameter that can be included in API requests.

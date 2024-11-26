@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	baseURLJourney    = "https://www3.vvs.de/mngvvs/XML_TRIP_REQUEST2"
-	baseURLWidgetDM   = "https://www3.vvs.de/vvs/widget/XML_DM_REQUEST"
-	baseURLStopFinder = "https://www3.vvs.de/mngvvs/XML_STOPFINDER_REQUEST"
-	baseURLGeoObject  = "https://www3.vvs.de/mngvvs/XML_GEOOBJECT_REQUEST"
+	baseURLJourney      = "https://www3.vvs.de/mngvvs/XML_TRIP_REQUEST2"
+	baseURLWidgetDM     = "https://www3.vvs.de/vvs/widget/XML_DM_REQUEST"
+	baseURLStopFinder   = "https://www3.vvs.de/mngvvs/XML_STOPFINDER_REQUEST"
+	baseURLGeoObject    = "https://www3.vvs.de/mngvvs/XML_GEOOBJECT_REQUEST"
+	baseURLServingLines = "https://www3.vvs.de/mngvvs/XML_SERVINGLINES_REQUEST"
 )
 
 const (
@@ -557,6 +558,60 @@ func GetGeoObject(r GeoObjectRequest, reqParams ...ReqParam) (*GeoObjectResponse
 
 	// Return the populated GeoObjectResponse struct
 	return &geoResponse, nil
+}
+
+// GetServingLines sends a request to the VVS API to retrieve serving lines for a specified line name.
+//
+// Parameters:
+// - r ServingLinesRequest: The parameters for the API request, including line name and network.
+// - reqParams ...ReqParam: Additional optional parameters.
+//
+// Returns:
+// - (*ServingLinesResponse, error): A pointer to the response containing line details or an error if the request fails.
+func GetServingLines(r ServingLinesRequest, reqParams ...ReqParam) (*ServingLinesResponse, error) {
+	// Prepare query parameters
+	params := url.Values{}
+	params.Set(ParamNet, "vvs")
+	params.Set(ParamMode, "line")
+	params.Set(ParamCoordOutputFormat, "EPSG:4326")
+	params.Set(ParamSpEncId, "0")
+	params.Set(ParamCommand, "direct")
+	params.Set(ParamLineName, r.LineName)
+	params.Set(ParamLsShowTrainsExplicit, "1")
+	params.Set(ParamOutputFormat, "rapidJSON")
+	params.Set(ParamServerInfo, "1")
+	params.Set(ParamVersion, "10.2.10.139")
+
+	// Override optional parameters
+	overrideReqParams(params, reqParams...)
+
+	// Build the URL
+	fullURL := baseURLServingLines + "?" + params.Encode()
+
+	// Make the GET request
+	resp, err := http.Get(fullURL)
+	if err != nil {
+		fmt.Println("Error making GET request:", err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return nil, err
+	}
+
+	// Unmarshal the JSON response into ServingLinesResponse
+	var servingLinesResponse ServingLinesResponse
+	err = json.Unmarshal(body, &servingLinesResponse)
+	if err != nil {
+		fmt.Println("Error unmarshalling JSON:", err)
+		return nil, err
+	}
+
+	return &servingLinesResponse, nil
 }
 
 func overrideReqParams(urlParams url.Values, params ...ReqParam) {

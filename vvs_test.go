@@ -252,6 +252,37 @@ func TestGetGeoObject(t *testing.T) {
 	}
 }
 
+func TestGetServingLines(t *testing.T) {
+	testCases := []struct {
+		name        string
+		lineName    string
+		expLineName string
+	}{
+		{
+			name:        "if valid line id is given serving line is returned",
+			lineName:    "U7",
+			expLineName: "U7",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := ServingLinesRequest{
+				LineName: tc.lineName,
+			}
+			srvLines, err := GetServingLines(req)
+
+			if err != nil {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
+			if srvLines == nil {
+				t.Fatalf("Returned value is nil")
+			}
+
+		})
+	}
+}
+
 // Helper function to create a pointer for boolean values
 func boolPointer(b bool) *bool {
 	return &b
