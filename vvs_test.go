@@ -222,6 +222,67 @@ func TestGetStopFinder(t *testing.T) {
 	}
 }
 
+func TestGetGeoObject(t *testing.T) {
+	testCases := []struct {
+		name        string
+		lineID      string
+		expLineName string
+	}{
+		{
+			name:        "if valid line id is given geo object is returned",
+			lineID:      "vvs:20007:+:H:j24:1",
+			expLineName: "U7",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := GeoObjectRequest{
+				LineID: tc.lineID,
+			}
+			geoObj, err := GetGeoObject(req)
+
+			if err != nil {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
+			if geoObj.Transportations[0].Number != tc.expLineName {
+				t.Fatalf("Line doesn't match")
+			}
+		})
+	}
+}
+
+func TestGetServingLines(t *testing.T) {
+	testCases := []struct {
+		name        string
+		lineName    string
+		expLineName string
+	}{
+		{
+			name:        "if valid line id is given serving line is returned",
+			lineName:    "U7",
+			expLineName: "U7",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := ServingLinesRequest{
+				LineName: tc.lineName,
+			}
+			srvLines, err := GetServingLines(req)
+
+			if err != nil {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
+			if srvLines == nil {
+				t.Fatalf("Returned value is nil")
+			}
+
+		})
+	}
+}
+
 // Helper function to create a pointer for boolean values
 func boolPointer(b bool) *bool {
 	return &b
