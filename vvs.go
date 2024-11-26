@@ -493,9 +493,6 @@ func GetStopFinder(r StopFinderRequest, reqParams ...ReqParam) (*StopFinderRespo
 // Parameters:
 // - r GeoObjectRequest: Struct containing the parameters for the geo-object request.
 //   - LineID: The ID of the line or transportation object to fetch data for. For example, "vvs:20007:+:H:j24:1".
-//   - CoordOutputFormat: The format of coordinates in the response, e.g., "EPSG:4326".
-//   - OutputFormat: The desired response format, e.g., "rapidJSON".
-//   - Version: The API version to use in the request.
 //
 // - reqParams ...ReqParam: Additional optional parameters that can be included in the request.
 //
@@ -507,9 +504,6 @@ func GetStopFinder(r StopFinderRequest, reqParams ...ReqParam) (*StopFinderRespo
 //
 //	geoReq := GeoObjectRequest{
 //	    LineID:           "vvs:20007:+:H:j24:1",
-//	    CoordOutputFormat: "EPSG:4326",
-//	    OutputFormat:      "rapidJSON",
-//	    Version:           "10.2.10.139",
 //	}
 //
 // geoResp, err := GetGeoObject(geoReq, ReqParam{Name: ParamServerInfo, Value: "1"})
@@ -524,14 +518,13 @@ func GetGeoObject(r GeoObjectRequest, reqParams ...ReqParam) (*GeoObjectResponse
 	params := url.Values{}
 
 	// Set mandatory parameters
-	//params.Set(ParamLineID, r.LineID)
 	params.Set(ParamOutputFormat, "rapidJSON")
 	params.Set(ParamCoordOutputFormat, "EPSG:4326")
 	params.Set(ParamVersion, "10.2.10.139")
 	params.Set(ParamSpEncId, "0")
 	params.Set(ParamServerInfo, "1")
-	params.Set("stFaZon", "1")
-	params.Set("vSL", "1")
+	params.Set(ParamStFaZon, "1")
+	params.Set(ParamVSL, "1")
 
 	// Override optional parameters if provided
 	overrideReqParams(params, reqParams...)

@@ -4,7 +4,14 @@ import "time"
 
 // Request params common for Geocoord
 const (
+	// ParamLineID specifies the line ID for the request, e.g. 'U6'
 	ParamLineID = "line"
+
+	// ParamStFaZon specifies the zone
+	ParamStFaZon = "stFaZon"
+
+	// ParamVSL specifies the verbosity level
+	ParamVSL = "vSL"
 )
 
 // Request params common for Journey and Arrival

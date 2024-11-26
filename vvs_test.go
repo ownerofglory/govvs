@@ -224,12 +224,14 @@ func TestGetStopFinder(t *testing.T) {
 
 func TestGetGeoObject(t *testing.T) {
 	testCases := []struct {
-		name   string
-		lineID string
+		name        string
+		lineID      string
+		expLineName string
 	}{
 		{
-			name:   "success",
-			lineID: "vvs:20007:+:H:j24:1",
+			name:        "if valid line id is given geo object is returned",
+			lineID:      "vvs:20007:+:H:j24:1",
+			expLineName: "U7",
 		},
 	}
 	for _, tc := range testCases {
@@ -238,8 +240,14 @@ func TestGetGeoObject(t *testing.T) {
 				LineID: tc.lineID,
 			}
 			geoObj, err := GetGeoObject(req)
-			_ = geoObj
-			_ = err
+
+			if err != nil {
+				t.Fatalf("Error occured: %v\n", err)
+			}
+
+			if geoObj.Transportations[0].Number != tc.expLineName {
+				t.Fatalf("Line doesn't match")
+			}
 		})
 	}
 }
